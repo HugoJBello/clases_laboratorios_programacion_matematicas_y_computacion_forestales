@@ -1,7 +1,8 @@
-\documentclass[a4paper,spanish,12pt]{article}
-\usepackage{amsmath,amsfonts,amssymb}
+\documentclass[a4paper,12pt]{article}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{babel}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
 
 \title{Soluciones a los ejercicios de\\
 Condicionales y bucles en Python (con NumPy)}
@@ -11,103 +12,199 @@ Condicionales y bucles en Python (con NumPy)}
 \begin{document}
 \maketitle
 
-\section*{Ejercicio: Método de Jacobi}
+% ==========================================================
+\section*{Ejercicio 1 (for): Mostrar los elementos de un vector}
 
-Queremos adaptar el código dado para el método de Jacobi a una función de Python cuya cabecera sea
+Dado el vector $v=(1,2,3,4,5)$, escribe un programa que muestre por pantalla todos sus elementos usando un bucle \texttt{for}.
+
 \begin{verbatim}
 import numpy as np
 
-def jacobi(N, A, b, x, d):
+v = np.array([1, 2, 3, 4, 5])
+
+for i in range(len(v)):
+    print(v[i])
 \end{verbatim}
-donde:
-\begin{itemize}
-  \item \texttt{N} es el número máximo de iteraciones.
-  \item \texttt{A} es la matriz del sistema (array 2D de NumPy).
-  \item \texttt{b} es el vector de términos independientes (array 1D de NumPy).
-  \item \texttt{x} es el valor inicial (array 1D de NumPy).
-  \item \texttt{d} es el parámetro de control de la tolerancia.
-\end{itemize}
 
-La idea es:
-\begin{enumerate}
-  \item Repetir el proceso de Jacobi como máximo \texttt{N} veces.
-  \item En cada iteración, calcular una nueva aproximación \texttt{x\_nueva} usando la fórmula
-  \[
-  x_n(i)=\frac{1}{a_{ii}}\left(-\sum_{\substack{j=1 \\ j \neq i}}^n a_{ij}x_{n-1}(j)+b_i\right).
-  \]
-  \item Calcular la norma de la diferencia entre \texttt{x\_nueva} y \texttt{x}:
-  \[
-  \|x_{n}-x_{n-1}\| = \|x\_\text{nueva}-x\| = \texttt{np.linalg.norm(x\_nueva - x)}.
-  \]
-  \item Si esta norma es menor que \texttt{d}, consideramos que hemos alcanzado una aproximación suficiente y usamos \texttt{break} para salir del bucle.
-  \item Actualizar \texttt{x} con la nueva aproximación y seguir iterando mientras no se haya alcanzado la tolerancia y no se superen las \texttt{N} iteraciones.
-\end{enumerate}
+% ==========================================================
+\section*{Ejercicio 2 (for): Contar elementos positivos}
 
-Una posible implementación completa es:
+Dado el vector $v=(-2,3,0,5,-1)$, cuenta cuántos elementos son positivos.
+
+\begin{verbatim}
+import numpy as np
+
+v = np.array([-2, 3, 0, 5, -1])
+
+contador = 0
+
+for i in range(len(v)):
+    if v[i] > 0:
+        contador = contador + 1
+
+print("Cantidad de positivos:", contador)
+\end{verbatim}
+
+% ==========================================================
+\section*{Ejercicio 3 (for): Producto de todas las entradas}
+
+Dado el vector $v=(1,2,3,-4,5)$, calcula el producto de todas sus entradas usando un bucle \texttt{for}.
+
+\begin{verbatim}
+import numpy as np
+
+v = np.array([1, 2, 3, -4, 5])
+
+producto = 1
+
+for i in range(len(v)):
+    producto = producto * v[i]
+
+print(producto)
+\end{verbatim}
+
+% ==========================================================
+\section*{Ejercicio 4 (while): Primer elemento negativo}
+
+Para el vector $v=(1,2,3,-4,5)$, busca el primer elemento negativo usando un bucle \texttt{while}.
+
+\begin{verbatim}
+import numpy as np
+
+v = np.array([1, 2, 3, -4, 5])
+
+i = 0
+
+while i < len(v):
+    if v[i] < 0:
+        print("Primer negativo:", v[i])
+        break
+    i = i + 1
+\end{verbatim}
+
+% ==========================================================
+\section*{Ejercicio 5 (for): Suma de todos los elementos de una matriz}
+
+Dada la matriz
+\[
+A=\begin{pmatrix}
+1 & 2 \\
+3 & 4
+\end{pmatrix},
+\]
+calcula la suma de todos sus elementos usando bucles \texttt{for}.
+
+\begin{verbatim}
+import numpy as np
+
+A = np.array([[1, 2],
+              [3, 4]])
+
+suma = 0
+
+for i in range(2):
+    for j in range(2):
+        suma = suma + A[i, j]
+
+print("Suma total:", suma)
+\end{verbatim}
+
+% ==========================================================
+\section*{Ejercicio 6 (while): Primera columna con todos los elementos distintos de cero}
+
+Dada la matriz
+\[
+B=\begin{pmatrix}
+3 & \frac{2}{5} & 0 \\
+0 & -1 & 4 \\
+\pi & 0 & 1
+\end{pmatrix},
+\]
+buscamos la primera columna cuyos elementos sean todos distintos de cero.
+
+\begin{verbatim}
+import numpy as np
+
+B = np.array([
+    [3, 2/5, 0],
+    [0, -1, 4],
+    [3.14, 0, 1]
+])
+
+j = 0
+
+while j < 3:
+    i = 0
+    todos_distintos = True
+
+    while i < 3:
+        if B[i, j] == 0:
+            todos_distintos = False
+        i = i + 1
+
+    if todos_distintos:
+        print("Primera columna válida:", j)
+        break
+
+    j = j + 1
+\end{verbatim}
+
+% ==========================================================
+\section*{Ejercicio 7 (for): Suma de las columnas}
+
+Calculamos la suma de cada columna de la matriz anterior.
+
+\begin{verbatim}
+import numpy as np
+
+B = np.array([
+    [3, 2/5, 0],
+    [0, -1, 4],
+    [3.14, 0, 1]
+])
+
+for j in range(3):
+    suma = 0
+    for i in range(3):
+        suma = suma + B[i, j]
+    print("Suma columna", j, "=", suma)
+\end{verbatim}
+
+% ==========================================================
+\section*{Ejercicio 8: Método de Jacobi (versión muy básica)}
+
+Implementamos el método de Jacobi de la forma más simple posible.
 
 \begin{verbatim}
 import numpy as np
 
 def jacobi(N, A, b, x, d):
-    """
-    Método de Jacobi para resolver A x = b.
 
-    Parámetros
-    ----------
-    N : int
-        Número máximo de iteraciones.
-    A : np.ndarray
-        Matriz del sistema (n x n).
-    b : np.ndarray
-        Vector de términos independientes (n,).
-    x : np.ndarray
-        Aproximación inicial (n,).
-    d : float
-        Tolerancia para la norma de x_n - x_{n-1}.
-
-    Devuelve
-    --------
-    x : np.ndarray
-        Aproximación final a la solución.
-    k : int
-        Número de iteraciones realizadas.
-    """
-
-    n = x.shape[0]
+    n = len(x)
 
     for k in range(N):
-        # Guardamos la aproximación anterior
-        x_anterior = x.copy()
 
-        # Nueva aproximación x_n
-        x_nueva = np.zeros_like(x)
+        x_nuevo = np.zeros(n)
 
         for i in range(n):
-            cuant = 0.0
+            suma = 0
             for j in range(n):
-                cuant = cuant + A[i, j] * x_anterior[j]
+                if j != i:
+                    suma = suma + A[i, j] * x[j]
 
-            x_nueva[i] = (-cuant + A[i, i] * x_anterior[i] + b[i]) / A[i, i]
+            x_nuevo[i] = (b[i] - suma) / A[i, i]
 
-        # Comprobamos la norma de la diferencia
-        diferencia = np.linalg.norm(x_nueva - x_anterior)
+        diferencia = 0
+        for i in range(n):
+            diferencia = diferencia + (x_nuevo[i] - x[i])**2
 
-        # Actualizamos x
-        x = x_nueva
-
-        # Criterio de parada
-        if diferencia < d:
+        if diferencia < d*d:
             break
 
-    return x, k + 1
-\end{verbatim}
+        x = x_nuevo
 
-Obsérvese que:
-\begin{itemize}
-  \item Se usa \texttt{np.zeros\_like(x)} para crear un vector de ceros con el mismo tamaño que \texttt{x}.
-  \item La expresión \texttt{np.linalg.norm(x\_nueva - x\_anterior)} calcula la norma euclídea de la diferencia.
-  \item La identación (sangrado) de los bloques \texttt{for}, \texttt{if}, etc., es esencial para que el programa funcione correctamente.
-\end{itemize}
+    return x
+\end{verbatim}
 
 \end{document}
 
